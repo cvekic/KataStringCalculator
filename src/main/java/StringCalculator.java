@@ -5,13 +5,25 @@ import java.util.List;
  */
 public class StringCalculator {
 
-    public int add(String stringToParse) {
+    public int add(String stringToParse) throws NegativesNotAllowedException{
         if(stringToParse.isEmpty() || stringToParse.equals(null)) {
             return 0;
         }
-       List<Integer> numbers = parseNumbers(stringToParse);
+        List<Integer> numbers = parseNumbers(stringToParse);
+        checkForNegativeNumbers(numbers);
+        return sum(numbers);
+    }
 
-       return sum(numbers);
+    private void checkForNegativeNumbers(List<Integer> numbers) throws NegativesNotAllowedException{
+        List<Integer> negatives = new ArrayList<Integer>();
+        for(Integer number : numbers) {
+            if(number < 0) {
+                negatives.add(number);
+            }
+        }
+        if(negatives.size()>0) {
+            throw  new NegativesNotAllowedException("Negatives are: " + negatives);
+        }
     }
 
     private int sum(List<Integer> numbers) {
@@ -42,5 +54,12 @@ public class StringCalculator {
         }
         numbers = numbers.replace("\\n", ",");
         return numbers;
+    }
+
+    public class NegativesNotAllowedException extends Exception {
+
+        public NegativesNotAllowedException(String message) {
+            super(message);
+        }
     }
 }
