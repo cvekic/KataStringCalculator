@@ -1,39 +1,46 @@
+import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by Mladjan on 24.3.2014.
  */
 public class StringCalculator {
-    public int add(String numbers) {
-        int sum = 0;
-//        boolean negative = false;
-//        List<Integer> negatives = null;
-        String[] preparedString;
-        if(numbers.isEmpty() || numbers.equals(null)) {
-            return sum;
+
+    public int add(String stringToParse) {
+        if(stringToParse.isEmpty() || stringToParse.equals(null)) {
+            return 0;
         }
-        preparedString = numbers.split("\\D+");
-        for(String digitString: preparedString ) {
-            if(digitString.equals(null) || digitString.isEmpty() || Integer.parseInt(digitString) > 999) {
+       List<Integer> numbers = parseNumbers(stringToParse);
+
+       return sum(numbers);
+    }
+
+    private int sum(List<Integer> numbers) {
+        int sum = 0;
+        for (int number: numbers) {
+            sum += number;
+        }
+        return sum;
+    }
+
+    private List<Integer> parseNumbers(String stringToParse) {
+        stringToParse = normalizeString(stringToParse);
+        List<Integer> numbers = new ArrayList<Integer>();
+        for(String number: stringToParse.split(",")) {
+            if(number.isEmpty()){
                 continue;
             }
-//            if (digitString.equals("-")){
-//                negative = true;
-//                continue;
-//            }
-//            if(negative == true) {
-//                negative = false;
-//                negatives.add(Integer.parseInt(digitString));
-//                continue;
-//            }
-            sum += Integer.parseInt(digitString);
+            numbers.add(Integer.parseInt(number));
         }
-//        if(negatives != null) {
-//            System.out.println("Negativ numbers will not be used!");
-//            for(Integer i : negatives) {
-//                System.out.println(i);
-//            }
-//        }
-        return sum;
+        return numbers;
+    }
+
+    private String normalizeString(String numbers) {
+        if(numbers.startsWith("//")) {
+            String delimiter = "" + numbers.charAt(2);
+            numbers = numbers.substring(4);
+            numbers = numbers.replaceAll(delimiter, ",");
+        }
+        numbers = numbers.replace("\\n", ",");
+        return numbers;
     }
 }

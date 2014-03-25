@@ -53,12 +53,7 @@ public class StringCalculatorTest {
 
     @Test
     public void mustReturn3for1_2_3WithStrangeString() {
-        assertEquals(3, subject.add("//;\\n1;2"));
+        assertEquals(3, subject.add("//;\n1;2"));
     }
-
-//    @Test
-//    public void mustSkipNegativeNumbers() {
-//        assertEquals(11, subject.add("1,2,3,-4,5"));
-//    }
 
 }
